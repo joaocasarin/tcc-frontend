@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
 import data from '../../data/users.json';
 import { UserResponse } from '../../interfaces/User';
-import { api } from '../../utils/api';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req as { method: string };
@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const response = await api.post('/', { img1: img, img2: user.faceBase64 });
+        const response = await axios.post(process.env.PY_API as string, { img1: img, img2: user.faceBase64 });
         
         if (response.status !== 200) {
             return res.status(404).json({ message: 'Images could not be checked' });
