@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+    db:
+        container_name: postgres-db
+        image: postgres:14.5-alpine3.16
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: tcc
+            POSTGRES_PASSWORD: joao
+            POSTGRES_DATABASE: tcc
+    db-admin:
+        container_name: pgadmin4-db
+        image: dpage/pgadmin4:6.13
+        restart: always
+        ports:
+            - 5433:5433
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=joao@tcc.com
+            - PGADMIN_DEFAULT_PASSWORD=joao
+        depends_on:
+            - db

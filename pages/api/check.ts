@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
-import data from '../../data/users.json';
-import { UserResponse } from '../../interfaces/User';
+// import data from '../../data/users.json';
+import prisma from '../../utils/database';
+// import { UserResponse } from '../../interfaces/User';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req as { method: string };
-    const users: UserResponse[] = JSON.parse(JSON.stringify(data));
+    // const users: UserResponse[] = JSON.parse(JSON.stringify(data));
     
     if(method === 'POST') {
         const { img, username } = req.body as { img: string, username: string };
@@ -18,7 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(404).json({ message: 'Username not found' });
         }
 
-        const user = users.find(user => user.username === username);
+        // const user = users.find(user => user.username === username);
+        const user = await prisma.user.findUnique({
+            where: {
+                username
+            }
+        });
 
         if(!user) {
             return res.status(404).json({ message: 'User not found' });
