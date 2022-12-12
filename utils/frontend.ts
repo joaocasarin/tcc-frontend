@@ -4,7 +4,7 @@ import { User, UserResponse } from '../interfaces/User';
 
 
 export const login = async ({ username, password, img }: { username: string; password: string, img: string }) => {
-    const response = await axios('/api/users');
+    const response = await axios.get('/api/users');
 
     const users = response.data['users'] as UserResponse[];
 

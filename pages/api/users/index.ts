@@ -33,8 +33,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             password: hashedPassword
         };
 
-        // users.push(newUser);
-        // fs.writeFileSync('data/users.json', JSON.stringify(users, null, 4));
+        await prisma.user.create({
+            data: newUser
+        });
 
         return res.status(201).json({ message: 'User created successfully', user: newUser });
     }
@@ -46,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 username: true,
                 name: true,
                 faceBase64: true,
-                password: false
+                password: true
             }
         });
         return res.status(200).json({ users });

@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if(method === 'GET') {
         const { id } = req.query as { id: string };
         // const user: Omit<UserResponse, 'password'> | undefined = users.find(user => user.id === id);
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: {
                 id
             },
@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { id } = req.query as { id: string };
 
         // const userIndex = users.findIndex(user => user.id === id);
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: {
                 id
             }
@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const usernameExists = await prisma.user.findUnique({
+        const usernameExists = await prisma.user.findFirst({
             where: {
                 username: reqData.username
             }
