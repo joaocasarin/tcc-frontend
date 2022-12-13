@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import Login from '../components/login';
 import Footer from '../components/footer';
+import { UserResponse } from '../interfaces/User';
 
 export default function Home() {
     const router = useRouter();
@@ -33,9 +34,10 @@ export default function Home() {
     };
 
     useEffect(() => {
-        const user = localStorage.getItem('user');
+        const data = localStorage.getItem('user');
+        const user = JSON.parse(data as string) as Partial<UserResponse>;
 
-        if (user) {
+        if (data && user?.id && user?.name && user?.username && user?.password && user?.faceBase64) {
             router.push('/');
         }
 

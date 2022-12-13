@@ -9,10 +9,11 @@ export default function Header() {
     const router = useRouter();
 
     useEffect(() => {
-        const ls = localStorage.getItem('user');
+        const data = localStorage.getItem('user');
+        const ls = JSON.parse(data as string) as Partial<UserResponse>;
 
-        if (ls) {
-            setUser(JSON.parse(ls) as UserResponse);
+        if (data && ls?.id && ls?.name && ls?.username && ls?.password && ls?.faceBase64) {
+            setUser(ls as UserResponse);
         }
     }, []);
 

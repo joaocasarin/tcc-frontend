@@ -14,7 +14,7 @@ import { UserResponse } from "../interfaces/User";
 import EditUser from "./editUser";
 import { useRouter } from "next/router";
 
-export default function Users({ setV }: { setV: (v: number) => void }) {
+export default function Users({ currUser }: { currUser: UserResponse }) {
     const router = useRouter();
     const [user, setUser] = useState<UserResponse>({id: '', name: '', username: '', password: '', faceBase64: ''} as UserResponse);
     const [users, setUsers] = useState<UserResponse[]>([] as UserResponse[]);
@@ -66,12 +66,16 @@ export default function Users({ setV }: { setV: (v: number) => void }) {
                             <TableCell>{u.name}</TableCell>
                             <TableCell>{u.username}</TableCell>
                             <TableCell>
-                                <IconButton onClick={() => onEdit(u)}>
-                                    <EditIcon color="primary" />
-                                </IconButton>
-                                <IconButton onClick={() => onDelete(u.id)}>
-                                    <DeleteIcon color="error" />
-                                </IconButton>
+                                {currUser.id !== u.id ? null : 
+                                    <IconButton onClick={() => onEdit(u)}>
+                                        <EditIcon color="primary" />
+                                    </IconButton>
+                                }
+                                {currUser.id !== u.id ? null : 
+                                    <IconButton onClick={() => onDelete(u.id)}>
+                                        <DeleteIcon color="error" />
+                                    </IconButton>
+                                }
                             </TableCell>
                         </TableRow>
                     ))}

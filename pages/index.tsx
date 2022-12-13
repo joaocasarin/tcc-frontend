@@ -4,16 +4,26 @@ import { useEffect, useState } from 'react';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import Users from '../components/users';
+import { UserResponse } from '../interfaces/User';
 
 export default function Home() {
-  const [v, setV] = useState(0);
+  const [user, setUser] = useState<UserResponse | null>({} as UserResponse);
   const router = useRouter();
-  useEffect(() => {
-    const user = localStorage.getItem('user');
 
-    if (!user) {
+  useEffect(() => {
+    const data = localStorage.getItem('user');
+
+    if (!data) {
       router.push('/login');
     }
+
+    const parsedData = JSON.parse(data as string);
+
+    if(!parsedData?.id || !parsedData?.name || !parsedData?.username || !parsedData?.password || !parsedData?.faceBase64) {
+      router.push('/login');
+    }
+
+    setUser(parsedData);
   }, [router]);
 
   return (
@@ -26,7 +36,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Users setV={setV} />
+      <Users currUser={user!} />
 
       <Footer />
     </div>
